@@ -5,7 +5,7 @@ clear
 close all
 %初始值
 F = 50;
-N = 32;
+N = 128;
 k = (0:(N-1));
 %步长0.000625
 l = 0.000625;
@@ -21,13 +21,16 @@ title('离散序列');
 %axis([0 (N-1) -2 2]);
 
 %FFT计时
-tic;
+t0start=tic;
 y0 = fft(x,N);
-toc;
+t0end=toc(t0start);
+disp("FFT needs "+t0end+'s');
+
 %DFT计时
-tic;
+t1start=tic;
 y1 = dft(x,N);
-toc;
+t1end=toc(t1start);
+disp("DFT needs "+t1end+'s');
 
 subplot(312);
 stem(k,abs(y0),'filled')
