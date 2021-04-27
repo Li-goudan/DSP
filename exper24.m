@@ -6,47 +6,52 @@ close all
 
 N = 32;
 n = 0:N-1;
-% %第一组
-% xn(1:15) = 1;
-% xn(16:32) = 0;
-% i = 0:14;
-% hn(i+1) = (4/5).^i;
-% hn(16:32) = 0;
+xn = [3,N];
+hn = [3,N];
 
-% %第二组
-% xn(1:10) = 1;
-% xn(11:32) = 0;
-% i = 0:19;
-% hn(i+1) = 0.5*sin(0.5*i);
-% hn(21:32) = 0;
+for z=1:3
+    
+%第一组
+xn(1,1:15) = 1;
+xn(1,16:32) = 0;
+i = 0:14;
+hn(1,i+1) = (4/5).^i;
+hn(1,16:32) = 0;
+yn(1,:) = conv(xn(1,:),hn(1,:));
+
+%第二组
+xn(2,1:10) = 1;
+xn(2,11:32) = 0;
+j = 0:19;
+hn(2,j+1) = 0.5*sin(0.5*j);
+hn(2,21:32) = 0;
+yn(2,:) = conv(xn(2,:),hn(2,:));
 
 %第三组
-i = 0:9;
-xn(i+1) = 1-0.1*i;
-hn(i+1) = 0.1*i;
-xn(11:32) = 0;
-hn(11:32) = 0;
-%调用自定义卷积函数
-yn = conv(xn,hn);
+k = 0:9;
+xn(3,k+1) = 1-0.1*k;
+hn(3,k+1) = 0.1*k;
+xn(3,11:32) = 0;
+hn(3,11:32) = 0;
+%调用卷积函数
+yn(3,:) = conv(xn(3,:),hn(3,:));
 
 %绘图
-subplot(311);
-stem(n,xn,'filled');
+subplot(3,3,z)
+stem(n,xn(z,:),'.');
 xlabel('n');
 ylabel('x(n)');
-subplot(312);
-stem(n,hn,'filled');
+title("第"+num2str(z)+"组");
+
+subplot(3,3,z+3)
+stem(n,hn(z,:),'.');
 xlabel('n');
 ylabel('h(n)');
-subplot(313);
+
+subplot(3,3,z+6);
 m = 0:62;
-stem(m,yn,'filled');
+stem(m,yn(z,:),'.');
 xlabel('n');
 ylabel('y(n)');
-%%
-function [yn] = convs(xn,hn,N)
-xk = fft(xn,N);
-hk = fft(hn,N);
-yk = xk .* hk;
-yn = ifft(yk,N);
+
 end
